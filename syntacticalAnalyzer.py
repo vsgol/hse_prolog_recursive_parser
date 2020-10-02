@@ -1,7 +1,7 @@
 import sys
 import argparse
-from parser import parse, IncompleteToken
-from lexer import IllegalCharacter
+from src.parser import parse, IncompleteToken
+from src.lexer import IllegalCharacter
 
 
 def add_arguments(args_str) -> argparse.Namespace:

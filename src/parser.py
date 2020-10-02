@@ -1,4 +1,4 @@
-from lexer import get_tokens
+from src.lexer import get_tokens
 
 
 def lexer(s):
