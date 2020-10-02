@@ -40,6 +40,9 @@ class Parser:
         self.last = None
 
     def accept(self, c):
+        if self.current == '\0':
+            return False
+
         if self.current.type == c:
             self.last = self.current
             self.current = next(self.lex)
@@ -114,6 +117,4 @@ def parse(text):
         if tree is None:
             if p.last is None:
                 return True
-            raise IncompleteToken("at line %d".format(p.last.lineno))
-        elif tree == 0:
-            return True
+            raise IncompleteToken("at line {}".format(p.last.lineno))
