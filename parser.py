@@ -84,12 +84,15 @@ class Parser:
             return r
 
     def lit(self):
+        if self.current == '\0':
+            return None
+        l = self.current
+
         if self.accept('DELIMITERL'):
             r = self.disj()
             if self.accept('DELIMITERR'):
                 return r
             return None
-        l = self.current
         self.current = next(self.lex)
 
         if l.type != 'ID':
@@ -98,14 +101,14 @@ class Parser:
 
     def attitude(self):
         l = self.id()
-        if l is None:
-            return l
-        if l == 0 or self.accept('DOT'):
-            return 0
+        if l is None or l == 0:
+            return None
+        if self.accept('DOT'):
+            return self.last
 
         r = self.corkscrew()
         if r is None or not self.accept('DOT'):
-            return None
+            raise IncompleteToken("at line {}".format(self.last.lineno+1))
         return Node(l, r, ':-')
 
 
@@ -115,6 +118,4 @@ def parse(text):
     while True:
         tree = p.attitude()
         if tree is None:
-            if p.last is None:
-                return True
-            raise IncompleteToken("at line {}".format(p.last.lineno))
+            return True
