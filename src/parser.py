@@ -111,7 +111,7 @@ class Parser:
 
         r = self.corkscrew()
         if r is None or not self.accept('DOT'):
-            raise IncompleteToken("at line {}".format(self.last.lineno+1))
+            raise IncompleteToken("at line {}".format(self.last.lineno))
         return Node(l, r, ':-')
 
 

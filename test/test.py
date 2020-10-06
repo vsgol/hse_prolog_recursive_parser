@@ -66,7 +66,7 @@ def test_error_line_par(monkeypatch, tmp_path, capsys):
     syntacticalAnalyzer.main([])
     out, err = capsys.readouterr()
     assert err == ''
-    assert out == 'IncompleteToken: at line 51\n'
+    assert out == 'IncompleteToken: at line 50\n'
 
 
 def test_error_files(monkeypatch, tmp_path, capsys):
@@ -82,11 +82,11 @@ def test_error_files(monkeypatch, tmp_path, capsys):
     out, err = capsys.readouterr()
     assert err == ''
     assert out == 'a: Correct\n' \
-                  'b: IncompleteToken: at line 78\n' \
+                  'b: IncompleteToken: at line 77\n' \
                   'c: Correct\n' \
                   'd: IllegalCharacter: \'9\', line 79\n' \
                   'e: IllegalCharacter: \'\\\', line 79\n' \
-                  'f: IncompleteToken: at line 80\n'
+                  'f: IncompleteToken: at line 79\n'
 
 
 def test_error_files2(monkeypatch, tmp_path, capsys):
@@ -101,7 +101,7 @@ def test_error_files2(monkeypatch, tmp_path, capsys):
     out, err = capsys.readouterr()
     assert err == ''
     assert out == 'a: IncompleteToken: at line 84\n' \
-                  'b: IncompleteToken: at line 90\n' \
-                  'c: IncompleteToken: at line 91\n' \
+                  'b: IncompleteToken: at line 89\n' \
+                  'c: IncompleteToken: at line 90\n' \
                   'd: Correct\n' \
-                  'e: IncompleteToken: at line 91\n'
+                  'e: IncompleteToken: at line 90\n'
