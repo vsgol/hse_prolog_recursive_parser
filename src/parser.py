@@ -53,6 +53,7 @@ class Parser:
         if self.current == '\0':
             return 0
         l = self.current
+        self.last = l
         self.current = next(self.lex)
         if l.type != 'ID':
             return None
@@ -87,12 +88,12 @@ class Parser:
         if self.current == '\0':
             return None
         l = self.current
-
         if self.accept('DELIMITERL'):
             r = self.disj()
             if self.accept('DELIMITERR'):
                 return r
             return None
+        self.last = self.current
         self.current = next(self.lex)
 
         if l.type != 'ID':
@@ -101,8 +102,10 @@ class Parser:
 
     def attitude(self):
         l = self.id()
-        if l is None or l == 0:
+        if l == 0:
             return None
+        if l is None:
+            raise IncompleteToken("at line {}".format(self.last.lineno))
         if self.accept('DOT'):
             return self.last
 

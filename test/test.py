@@ -87,3 +87,21 @@ def test_error_files(monkeypatch, tmp_path, capsys):
                   'd: IllegalCharacter: \'9\', line 79\n' \
                   'e: IllegalCharacter: \'\\\', line 79\n' \
                   'f: IncompleteToken: at line 80\n'
+
+
+def test_error_files2(monkeypatch, tmp_path, capsys):
+    (tmp_path / 'a').write_text('asd. \n a:-s. \n\n a.\n :- f; g, g, (((((f)), ((g, ggg)), g, ggg, fgfgfg, fg))).\n')
+    (tmp_path / 'b').write_text('asd. \n a:-s. \n\n a.\n hello :- (f g); f, g, ggg, g, (ggg, (fgf,(gf;g), d)), f.\n')
+    (tmp_path / 'c').write_text('a. a. a:-.')
+    (tmp_path / 'd').write_text('a. a. a:-a,a,a. a:-(((((((f))))))).')
+    (tmp_path / 'e').write_text('a. a. a:-a,a,a. a:-(((((((f))))))).a:-a, , b.')
+
+    monkeypatch.chdir(tmp_path)
+    syntacticalAnalyzer.main(['a', 'b', 'c', 'd', 'e'])
+    out, err = capsys.readouterr()
+    assert err == ''
+    assert out == 'a: IncompleteToken: at line 84\n' \
+                  'b: IncompleteToken: at line 90\n' \
+                  'c: IncompleteToken: at line 91\n' \
+                  'd: Correct\n' \
+                  'e: IncompleteToken: at line 91\n'
